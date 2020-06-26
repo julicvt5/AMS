@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+        <link rel="stylesheet" href="static/css/estilos1.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+<form action="/Proyecto" method="POST">
+
+
+
+    <div class="link">
+         <nav>
+            <ul>
+                <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+                <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+                <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <div class="menu">
+     <header>PROJEC<p>A M S</p></header>
+
+    <ul>
+        <li><a href="{{url_for('P_economics')}}"><i class="fas fa-donate"></i>Economics</a></li>
+        <li><a href="#"><i class="fas fa-folder open"></i>Basics</a></li>
+        <li><a href="#"><i class="fas fa-edit"></i>Paperwork</a></li>
+        <li><a href="#"><i class="fas fa-drafting-compass"></i>Design</a></li>
+        <li><a href="#"><i class="fas fa-charging-station"></i>Energy Supply</a></li>
+        <li><a href="#"><i class="fas fa-stream"></i>ESP Surface</a></li>
+        <li><a href="#"><i class="fas fa-tachometer-alt"></i>Downhole Equipment</a></li>
+        <li><a href="#"><i class="far fa-check-circle"></i>Commissioning</a></li>
+        <li><a href="#"><i class="far fa-handshake"></i>Services</a></li>
+        <li><a href="#"><i class="fas fa-file-signature"></i>Reports</a></li>
+        <li><a href="#"><i class="fas fa-cogs"></i>Operation</a></li>
+        <li><a href="#"><i class="fas fa-bezier-curve"></i>Field Jobs</a></li>
+        <li><a href="#"><i class="fas fa-paper-plane"></i>Post W.O. Activities</a></li>
+        <li><a href="#"><i class="fas fa-chart-bar"></i>Design Details</a></li>
+       </ul>
+   </div>
+    
+   <div class="container" style="padding-left: 300px; padding-top: 50px;  padding-right: 70px;">
+    <h1 class="display-1">Modulo de Proyectos</h1>
+    <h3 class="display-1">Por favor complete la siguiente información</h3>
+   
+   </div>
+
+   
+</body>
+</html>

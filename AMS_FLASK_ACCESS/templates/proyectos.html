@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+        <link rel="stylesheet" href="static/css/estilos1.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+  {% with messages = get_flashed_messages()%}
+  {% if messages %}
+  {% for message in messages  %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <!-- <p style="padding-left: 300px; padding-top: 120px;">{{ message }}</p>-->
+  {% endfor %}
+  {% endif %}
+  {% endwith%}
+
+    <div class="link">
+    <nav>
+      <ul>
+        <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+        <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+        <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+    </ul>
+   </nav>
+</div>
+
+
+<div class="menu">
+     <header><img src="static/image/perenco.png" style="color: whitesmoke;"  width="200" height="75"    alt=""></header>
+
+    <ul>
+        <li><a href="#"><i class="far fa-check-circle"></i>Admin Proyectos</a></li>
+        <li><a href="{{url_for('admin')}}"><i class="far fa-check-circle"></i>Admin</a></li>
+    </ul>
+</div>
+
+<form action="/proyectos" method="POST">
+  <div class="formulario_Crear" style="padding-left: 300px; padding-top: 80px;  padding-right: 70px;">
+      <h3 style="color: #063146;">Crear Proyecto</h3><br>
+      <form class="form-inline">
+        <div style="width: 30%; display: none;">
+          <p>Nombre:<input type="text" class ="form-control" name="nom_proyecto"  autocomplete="off"></p> 
+        </div>
+       
+        <div style="width: 17%;">
+          <p>Nombre del Pozo:
+            <select name="seleccione_pozo" id="pozo" class="form-control">
+              {% for row in result %}
+              <option>{{row["nombre"]}}</option>
+              {% endfor %}
+            </select>
+          </p>
+        </div>
+
+        <div style="margin-left: 19%; width: 17%; margin-top:-78px;">
+        <p>Nombre del Sistema:
+          <select name="sist" id="sist" class="form-control">
+            {% for row in result %}
+            <option>{{row["sistemas_nombre"]}}</option>
+            {% endfor %}
+          </select>
+        </p> 
+      </div>
+
+
+      <div>
+       
+        <div style ="margin-left: 38%; width: 17%; margin-top:-78px;">  
+        <p>Fecha Inicial:<input type="date" class ="form-control"  name="fecha_inicial" autocomplete="off"></p>
+        </div>
+        <div style="margin-left: 57%; width: 17%; margin-top: -78px;">  
+          <p>Fecha Est. Fin:<input type="date" class ="form-control"  name="fecha_estimada_fin" autocomplete="off"></p>
+        </div>
+        <div style="margin-left: 76%; width: 17%; margin-top: -78px;">
+          <p>Fecha Real Fin:<input type="date" class ="form-control"  name="fecha_real_fin" autocomplete="off"></p>
+        </div >
+        <div style ="margin-left: 0%; width: 30%; margin-top: 10px; width: 70%;">
+          <p>Descripción:<textarea class ="form-control" name="Descripcion"  id="" cols="30" rows="10" autocomplete="off" style="height: 100px;" ></textarea></p>
+      </div> <br><br>   
+      <div style="margin-top: -133px; margin-left: 72%;">
+          <input type="submit" value="Ver opciones" name="Clic" class="btn btn-outline-secondary"/>
+          <input style= "margin-left: 4px;"type="submit" value="Guardar" name="Guardar"class="btn btn-outline-secondary" />
+      </div>
+      </form>
+  </div>
+</form>
+
+<form action="/mostrar_proyectos" method="POST">
+<div class="formulario_Consultar" style=" padding-top: 60px;  padding-right: 70px;">
+    <h3 style="color: #063146;">Listado de Proyectos:</h3>
+    <p style="color:darkgreen; font-size:smaller;">{{total}} Proyectos Creados </p>
+    <button type="submit" class="btn btn-outline-secondary">Ver Listado</button> 
+    <br>
+    <br>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Pozo</th>
+          <th scope="col">Sistema</th>
+          <th scope="col">F.Inicial</th>
+          <th scope="col">F.Est. Fin</th>
+          <th scope="col">F.Fin</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Usuario</th>
+          <th scope="col">Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for row in result_proy %}
+          <tr>
+          <td style="font-size:90%;">{{row["nombre"]}}</td>
+          <td style="font-size:90%;">{{row["descripcion"]}}</td>
+          <td style="font-size:90%;">{{row["nom_pozo"]}}</td>
+          <td style="font-size:90%;">{{row["nom_sistema"]}}</td>
+          <td style="font-size:90%;">{{row["fecha_inicio"]}}</td>
+          <td style="font-size:90%;">{{row["fecha_estimada_fin"]}}</td>
+          <td style="font-size:90%;">{{row["fecha_real_fin"]}}</td>
+          <td style="font-size:90%;">{{row["descripcion"]}}</td>
+          <td style="font-size:90%;">{{row["nom_usuario"]}}</td>
+          <td>
+            <a href="/update_proyecto/{{row.idProyectos}}" class="btn btn-outline-warning" data-toggle="modal" data-target="#modaledit{{row.idProyectos}}" style="font-size: small;"><i class="fas fa-edit"></i></a>
+            <a href="/delete_proyecto/{{row.idProyectos}}" class="btn btn-outline-danger" onclick="return confirm('Are You Sure To Delete ?')" style="font-size: small;"><i class="far fa-trash-alt"></i></a>
+          </td>
+          </tr>  
+           <!-- Modal Edit Employee-->
+           <div id="modaledit{{row.idProyectos}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Actualizar Informacion</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('update_proyecto')}}" method="POST">
+                        <div class="form-group">
+                          <p style="color: brown; font-size: small;"> En las fechas por favor utilizar este formato: AAAA-MM-DD</p>
+                          <input type="hidden" class="form-control" name="id" value="{{row.idProyectos}}">
+                          <input type="text" disabled=disabled class="form-control" name="nombre" value="{{row.nombre}}">
+                          </p>
+                          <p>Fecha Inicial
+                          <input type="text" class="form-control" name="fecha_inicial" value="{{row.fecha_inicio}}">
+                          </p>
+                          <p> Fecha Estimada Fin
+                          <input type="text" class="form-control" name="fecha_estimada_fin" value="{{row.fecha_estimada_fin}}">
+                          </p>
+                          <p>Fecha Real Fin
+                          <input type="text" class="form-control" name="fecha_real_fin" value="{{row.fecha_real_fin}}">
+                          </p>
+                          <p> Descripción
+                          <input type="text" class="form-control" name="Descripcion" value="{{row.descripcion}}">
+                          </p>
+                          </div>
+                        <div class="form-group">
+                          <button class="btn btn-outline-success" type="submit">Actualizar</button>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+           </div>
+        </div>       
+      {% endfor %}
+    </tbody>
+  </table>       
+      
+</div>
+</form>
+
+
+<!--SCRIPTS-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>

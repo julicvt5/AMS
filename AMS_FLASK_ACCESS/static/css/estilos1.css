@@ -1,0 +1,84 @@
+
+body{
+   font-family: Arial, Helvetica, sans-serif;
+   background: #e8e8e8;
+}
+
+
+
+.link nav ul li{
+   float: left;
+   list-style: none;
+   padding:10px;
+   color: #666;
+}
+
+.link nav{
+   float: right;
+   margin-top: 30px;
+   margin-right:70px;
+}
+
+
+
+
+.menu {
+   position: fixed;
+   list-style: none;
+   width: 250px;
+   height: 100%;
+   background: #092327;
+   max-width: 1000px;
+}
+
+.menu header{
+   font-size: 30px; /* tamaño de la fuente AMS*/
+   color: silver;
+   text-align: center;
+   background: #063146;
+   user-select: none;
+   padding-top: 10px;
+  }
+
+.menu header p{
+  font-size: 25px;
+  color: cornflowerblue;
+  line-height: 0.1px;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom:20px;
+   }
+
+.menu ul{
+   margin-left: -25px; /*margen izquierdo de la distancia del contenedor al item del menu*/
+
+}
+.menu ul li {  /*configuración del contenedor del menu*/
+   /*  display:inline-block;*/
+     list-style: none; /*elimina la viñeta de puntos del menu*/
+     text-align:left; 
+     display: block;
+     padding: 9px; /*Distancia entre los items del menu*/
+  }
+
+ .menu ul li a{  /*Configuración del texto del menu*/
+   text-decoration: none;
+   color: whitesmoke;
+   }
+
+ ul li:hover a{
+   padding-left: 20px;  /*posición del cambio del item */
+   }
+
+.menu ul a i{
+  margin-right: 12px;  /*tamaño entre items del menu*/
+}
+
+li:hover{   /*Color del item del menu*/
+   background: grey;
+}
+
+.formulario h3 {
+ margin-left: 500px;
+ margin-top: 300px;
+ }

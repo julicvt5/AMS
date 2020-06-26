@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="static/css/estilos1.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body>
+  {% with messages = get_flashed_messages()%}
+  {% if messages %}
+  {% for message in messages  %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <!-- <p style="padding-left: 300px; padding-top: 120px;">{{ message }}</p>-->
+  {% endfor %}
+  {% endif %}
+  {% endwith%}
+
+    <div class="link">
+         <nav>
+            <ul>
+                <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+                <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+                <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="menu">
+      <header>PROJECT<p>A M S</p></header>
+        <ul>
+            <li><a href="{{url_for('datos_proyecto')}}"><i class="fas fa-donate"></i>Diligenciar Proyecto</a></li>
+            <li><a href="{{url_for('resumen_proyecto')}}"><i class="fas fa-folder open"></i>Ver Resumen del proyecto</a></li>
+            <li><a href="{{url_for('informe_proyecto')}}"><i class="fas fa-folder open"></i>Generar informe</a></li>
+        </ul>
+    </div>
+
+    
+<!-- Boton descargar Excel-->
+<form action="/descarga_excel" method="POST" style="position: absolute;">
+  <!--       Botones para generar EXCEL-->
+  <div >
+    <input type="submit" value="Excel" name="Excel" style="margin-left: 1100%;margin-top: 400%;" class="btn btn-outline-success">
+</div>
+       <!-- captura de datos ocultos -->
+    <textarea name="etapa" style= "margin-top:-550px;width: 20%; margin-left:10%; display: none; ">{{seleccione_etapa}}</textarea>
+    <textarea name="pozo" style= "margin-top:-550%;width: 20%; margin-left:50%; display: none;">{{Pozo}}</textarea>
+    <textarea name="sistema" style= "margin-top:-550%;width: 20%; margin-left:50%; display: none;">{{Sist}}</textarea>
+      
+<br>
+   </form>
+
+
+
+  <form action="/resumen_proyecto" method="POST">      
+   <!--<form action="consult_datos_proy" method="POST">
+   --><div class="formulario_Crear" style="padding-left: 300px; padding-top: 80px; padding-right: 70px;">
+      <h3>Resumen del Proyecto</h3><br>
+      <h6> Proyecto:</h6>
+      <div style=" margin-left: 7%; width: 80%; margin-top:-35px;">
+        <select name="selec_proyecto" class="form-control" style="width: 30%;">
+          {% for row in list_proyecto %}
+          <option>{{row["nombre"]}}</option>
+          {% endfor %}
+        </select>
+    </div>
+
+    <h6 style="margin-left: 33%; margin-top: -28px;">Etapa:</h6>
+      <div style=" margin-left: 38%; width: 80%; margin-top:-35px;">
+          <select name="seleccione_etapa" class="form-control" style="width: 30%;">
+            {% for row in list_etapa %}
+            <option>{{row["nom_etapa"]}}</option>
+            {% endfor %}
+          </select>
+      </div>
+
+    <div style=" margin-left: 65%; width: 30%; margin-top:-37px;">
+      <input type="submit" value="Activar Opciones" class="btn btn-outline-secondary" name="List"/>
+      <input style= margin-left:5% ; type="submit" value="Consultar" class="btn btn-outline-secondary" name="Consultar" />
+    </div><br><br><br>
+ 
+ 
+     <!-- -.....................................................................................-->
+
+     <div style="margin-top: -2%; width: 25%;">
+      <table class="table table-sm table-dark">
+         <tbody>
+          <tr>
+            <th scope="row" style="  text-align: right;">Proyecto</th>
+             <td style=" color:gainsboro;">{{selec_proyecto}}</td>
+          </tr>  
+          <tr>
+            <th scope="row" style="  text-align: right;">Pozo</th>
+            <td style="text-align: left; color: gainsboro;">{{Pozo}}</td> 
+       
+          </tr>
+          <tr>          
+            <th scope="row" style="  text-align: right;">Sistema</th>
+            <td style=" color: gainsboro;">{{Sist}}</td>
+                   
+          </tr> 
+          <tr>
+            <th scope="row" style="  text-align: right;">Etapa</th>
+            <td style=" color:gainsboro;">{{seleccione_etapa}}<td>
+          </tr> 
+        </tbody>
+      </table>
+    </div>
+  </div> 
+
+  
+ <!-- Tabla resumen-->
+<div style="padding-left: 300px; padding-top: -20px; padding-right: 70px;">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Etapa</th>
+          <th scope="col">Componente</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Data Avalilable</th>
+          <th scope="col">Comentarios</th>
+          <th scope="col">Operaciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for row in result_proyecto2 %}
+          <tr>
+          <td>{{row["id"]}}</td>
+          <td>{{row["nom_etapa"]}}</td>
+          <td>{{row["nom_componente"]}}</td>
+          <td>{{row["valor_moneda"]}}</td> 
+          <td>{{row["nom_estado"]}}</td>        
+          <td>{{row["date_available"]}}</td>
+          <td>{{row["comentarios"]}}</td>
+          <td>
+            <a href="/update_resproyecto/{{row.id}}" class="btn btn-outline-warning" data-toggle="modal" data-target="#modaledit{{row.id}}" style="font-size: small;"><i class="fas fa-edit"></i></a>
+            <a href="/delete_resproyecto/{{row.id}}" class="btn btn-outline-danger" onclick="return confirm('Are You Sure To Delete ?')" style="font-size: small;"><i class="far fa-trash-alt"></i></a>
+          </td>
+          </tr>
+          <!-- Modal Edit Employee-->
+          <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Actualizar Informacion</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('update_resproyecto')}}" method="POST">
+                        <div class="form-group">
+                          <input type="hidden" class="form-control" name="id" value="{{row.id}}">
+                          </p>
+                          <p>Proyecto
+                          <input type="text" disabled = "disabled" class="form-control" name="nombre" value="{{row.nom_proyecto}}">
+                          </p>
+                          <p>Etapa
+                            <input type="text" disabled = "disabled" class="form-control" name="etapa" value="{{row.nom_etapa}}">
+                          </p>
+                          <p>Componente
+                            <input type="text" disabled = "disabled" class="form-control" name="componente" value="{{row.nom_componente}}">
+                          </p>
+                          <p>Valor
+                            <input type="text"  class="form-control" name="valor" value="{{row.Valor}}">
+                          </p>
+                          <p>Estado
+                          <select name="estado" class="form-control" >
+                            <option value="{{row.nom_estado}}" disabled= "disabled" selected>{{row.nom_estado}}</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Finalizado">Finalizado</option>
+                            <option value="No Aplica">No Aplica</option>
+                          </select>
+                          </p>
+                          <p>Date Available
+                            <input type="text"  class="form-control" name="date" value="{{row.date_available}}">
+                          </p>
+                          <p>comentario
+                            <input type="text"  class="form-control" name="comentarios" value="{{row.comentarios}}">
+                          </p>
+                        </div>
+                        <div class="form-group">
+                          <button class="btn btn-outline-success" type="submit">Actualizar</button>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+           </div>
+        </div>     
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>       
+</div>  
+</div>
+</form>
+
+
+
+
+<!--SCRIPTS-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+

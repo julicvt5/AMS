@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>informePDF</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+</head>
+<body>
+
+    <h3 style="padding-left: 20px; padding-top: 30px;">INFORME DE PROYECTOS</h3>
+    <form action="/informePDF" method="POST">
+
+        <div style="margin-top: -2%; width: 30%; padding-top: 3%; margin-left: 20px;">
+            <table class="table table-sm">
+               <tbody>
+                <tr class="table-secondary">
+                  <th scope="row" style="  text-align: left;"><i>Proyecto:</i></th>
+                   <td>{{seleccione_proyecto}}</td>
+                </tr>  
+                <tr  class="table-secondary">
+                  <th scope="row" style="  text-align: left;"><i>Pozo:</i></th>
+                  {% for row in result_pozo_sist %}
+                  <td>{{row["nom_pozo"]}}</td> 
+                  {% endfor %}       
+                </tr>
+                <tr  class="table-secondary">          
+                  <th scope="row" style="  text-align: left;"><i>Sistema:</i></th>
+                  {% for row in result_pozo_sist %}
+                  <td>{{row["nom_sistema"]}}</td>
+                  {% endfor %}               
+                </tr> 
+            </tbody>
+            </table>
+          </div>
+        </div> <br>
+        <!-- Tabla resumen-->
+        <div style="padding-left:20px;padding-right: 70px;">
+          <table class="table">
+            <thead class="table table-sm">
+              <tr>
+                <th scope="col">Etapa</th>
+                <th scope="col">Componente</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Data Avalilable</th>
+                <th scope="col">Comentarios</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% for row in result_proyecto2 %}
+                <tr>
+                <td>{{row["nom_etapa"]}}</td>
+                <td>{{row["nom_componente"]}}</td>
+                <td>{{row["Valor"]}}</td>
+                <td>{{row["nom_estado"]}}</td>        
+                <td>{{row["date_available"]}}</td>
+                <td>{{row["comentarios"]}}</td>
+                </tr>       
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>       
+          </div>  
+        </div>
+        </form>
+        
+</body>
+</html>
+

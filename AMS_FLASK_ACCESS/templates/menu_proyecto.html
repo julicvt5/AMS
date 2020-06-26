@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+        <link rel="stylesheet" href="static/css/estilos1.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+<form action="/menu_proyecto" method="POST">
+
+
+
+    <div class="link">
+         <nav>
+            <ul>
+                <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+                <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+                <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </div>
+
+<div class="menu">
+    <header>PROJECT<p>A M S</p></header>
+
+   <ul>
+       <li><a href="{{url_for('datos_proyecto')}}"><i class="fas fa-donate"></i>Diligenciar Proyecto</a></li>
+       <li><a href="{{url_for('resumen_proyecto')}}"><i class="fas fa-folder open"></i>Ver Resumen del proyecto</a></li>
+       <li><a href="{{url_for('informe_proyecto')}}"><i class="fas fa-folder open"></i>Generar informe</a></li>
+    </ul>
+</div>
+   
+
+   <div class="container" style="padding-left: 300px; padding-top: 50px;  padding-right: 70px;">
+    <h1 class="display-1">Modulo de Proyectos</h1>
+   </div>
+
+   
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="static/css/estilos1.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body>
+  {% with messages = get_flashed_messages()%}
+  {% if messages %}
+  {% for message in messages  %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <!-- <p style="padding-left: 300px; padding-top: 120px;">{{ message }}</p>-->
+  {% endfor %}
+  {% endif %}
+  {% endwith%}
+
+
+
+
+    <div class="link">
+         <nav>
+            <ul>
+                <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+                <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+                <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="menu">
+      <header>PROJECT<p>A M S</p></header>
+        <ul>
+            <li><a href="{{url_for('datos_proyecto')}}"><i class="fas fa-donate"></i>Diligenciar Proyecto</a></li>
+            <li><a href="{{url_for('resumen_proyecto')}}"><i class="fas fa-folder open"></i>Ver Resumen del proyecto</a></li>
+            <li><a href="{{url_for('informe_proyecto')}}"><i class="fas fa-folder open"></i>Generar informe</a></li>
+        </ul>
+    </div>
+        
+  <form action="datos_proyecto" method="POST">
+    <div class="formulario_Crear" style="padding-left: 300px; padding-top: 80px; padding-right: 70px;">
+      <h3>Diligenciar Proyecto</h3><br>
+      <form class="form-inline">
+        <div >
+          <p> Seleccione el Proyecto:
+            <select name="seleccione_proyecto" class="form-control" style="width: 30%;">
+              {% for row in result_proyecto %}
+              <option>{{row["nombre"]}}</option>
+              {% endfor %}
+            </select>
+          </p>
+        </div> 
+        <div style=" margin-left: 32%; width: 100%; margin-top:-78px;">  
+        <p>Seleccione la Etapa:
+            <select name="seleccione_etapa" class="form-control" style="width: 30%;">
+              {% for row in result_etapa %}
+              <option>{{row["nom_etapa"]}}</option>
+              {% endfor %}
+            </select>
+          </p>
+        </div>
+
+        <div style=" margin-left: 64%; width: 82%; margin-top:-78px;">
+          <p>Seleccione el Componente: 
+           <select name="seleccione_componente"  class="form-control" style="width: 36%;">
+             {% for row in result_compo %}
+             <option>{{row["nombre"]}}</option>
+             {% endfor %}
+             
+            </select>
+         </p>
+        </div>
+        
+      <div style=" margin-left: 0%; margin-top: 27px; width: 100%;">
+        <p>Moneda:
+          <select name="seleccione_abreviatura" class="form-control" style="width: 9%;">
+            {% for row in result_moneda %}
+            <option>{{row["abreviatura"]}}</option>
+            {% endfor %}
+          </select>
+          </p>
+      </div>
+
+        <div style=" margin-left: 11%; margin-top: -78px; width: 100%;">                 
+          <p>Valor:             
+            <input type="text" class="form-control" style="width: 18%;" name="valor" >
+          </p>         
+        </div>
+        
+       <!--<div style=" margin-left: 64%; width: 30%; margin-top:-78px;">   
+       --><div style=" margin-left: 32%; width: 30%; margin-top:-78px;">
+            <p>Seleccione el Estado:
+            <select name="seleccione_estado" class="form-control">
+              {% for row in result_estado %}
+              <option>{{row["nombre"]}}</option>
+              {% endfor %}
+            </select>
+          </p> 
+        </div>
+             
+        <div style="width: 94%;"> 
+          <p>Comentarios:<textarea class ="form-control" name="comentarios"  id="" cols="30" rows="10" autocomplete="off" style="height: 100px;" ></textarea></p>
+        </div>
+          <br>
+       <!--<div style=" margin-left: 70%; width: 30%; margin-top:-158px;">
+       --><div style=" margin-left: 70%; width: 30%; margin-top:-242px;">   
+          <p style="margin-left: -18%;">Data Available:<input type="date" class ="form-control"  name="fecha_inicial" autocomplete="off" style="width: 83%;"></p>
+          </div>
+          
+        <div style=" margin-left: 0%; margin-top: 20%; width: 100%;">
+          <input type="submit" value="Activar Opciones" class="btn btn-outline-secondary" name="List"/>
+          <input type="submit" value="Guardar Datos" class="btn btn-outline-secondary" name="Guardar" />
+        </div>
+ 
+    </form>
+    </div>
+  </form> 
+
+  <!--<form action="/Buscar_componente">
+    <div style=" margin-left: 69%; width: 60%; margin-top:-391px;">
+      <p>Seleccione el Componente: 
+       <select name="seleccione_componente"  class="form-control" style="width: 36%;">
+         {% for row in result_compo %}
+         <option>{{row["nombre"]}}</option>
+         {% endfor %}
+       </select>
+     </p>
+     <input style = " margin-left :24%; margin-top: -11%; height: 25px; font-size: xx-small;" type="submit" value="Mostrar" class="btn btn-outline-secondary" name="Mostrar" />         
+   </div>
+--
+  </form>
+-->
+<!--SCRIPTS-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

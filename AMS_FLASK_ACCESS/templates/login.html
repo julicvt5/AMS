@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}"> <!-- para colocar css a la pagina-->
+</head>
+
+<body>
+    <form action="/login" method='POST'>
+
+    <div class="login-box">
+        <h1>Login</h1>
+
+        <div class="textbox">
+           <input type="text" name="email" placeholder="Usuario" autocomplete="off">
+        </div>
+
+        <div class="textbox">
+            <input type="password" name="password" placeholder="Contraseña" autocomplete="off">
+        </div>
+
+        <button type="submit"   style="width: 100%; background: none; border: 2px solid whitesmoke; color: white; padding: 20 px; font-size: 18px; cursor: pointer; margin: 12px 0;
+         height: 40px; ">Iniciar Sesión</button> 
+                
+
+        <div class="msg">
+        <p class="message">¿No está registrado?
+        <a style = "color:whitesmoke" href="{{url_for('reg_user')}}"> Crea una Cuenta</a><br />
+        </a><br />
+        </div>
+
+     </div>
+
+    </form> 
+</body>
+</html>
+
+<!--<form action="/login" method='POST'>
+
+    <input type="text" name="email" placeholder="Ingrese su Usuario">
+    <input type="text" name="password" placeholder="Ingrese su Contraseña">
+    <button type="submit">Iniciar Sesión</button>
+    <p class="message">¿No está registrado?
+        <a href="reg_user.html"> Crea una Cuenta</a><br />
+        </a><br />
+    </p>
+    </form> 
+
+
+
+
+
+

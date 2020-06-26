@@ -1,0 +1,58 @@
+<!--Formulario de Registro de usuarios-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}"> <!-- para colocar css a la pagina-->
+</head>
+<body>
+        
+        <form action="/reg_user" method="POST">
+
+    <div class="login-box">
+           <h1>Registro</h1>
+
+        <div class="textbox">
+            <input type="text" name="iduser" placeholder="N°. Identificación" autocomplete="off">
+        </div>
+
+      
+        <div class="textbox">
+            <input type="text" name="nombre" placeholder="Nombre Completo" autocomplete="off">
+        </div>
+                  
+               
+                    
+        <div class="textbox">
+            <input type="text" name="email" placeholder="Email" autocomplete="off">
+        </div>
+
+
+        <div class="textbox">
+            <input type="password" name="password" placeholder="Ingrese una Contraseña" autocomplete="off">
+        </div>
+
+        <!-- <input class="btn" type="submit" name="Registrarme" value="Registrarme" href="{{url_for('index')}}"> -->
+           <!-- <button type="submit">Registrarme</button>  -->
+         <button type="submit"   style="width: 100%; background: none; border: 2px solid whitesmoke; color: whitesmoke; padding: 20 px; font-size: 18px; cursor: pointer; margin: 12px 0;
+         height: 40px; ">Registrarme</button>  
+                
+                <div class="msg">
+            <p class="message">¿Está registrado?, 
+                <a style = "color:whitesmoke" href="{{url_for('login')}}"> Inicie Sesión</a>
+            </a><br />
+        </div>
+
+         </form>
+
+    </div>
+</body>
+</html>
+
+
+
+
+

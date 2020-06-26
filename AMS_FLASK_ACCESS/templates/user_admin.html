@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>menu</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+        <link rel="stylesheet" href="static/css/estilos1.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+
+  
+  {% with messages = get_flashed_messages()%}
+  {% if messages %}
+  {% for message in messages  %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <!-- <p style="padding-left: 300px; padding-top: 120px;">{{ message }}</p>-->
+  {% endfor %}
+  {% endif %}
+  {% endwith%}
+
+  <div class="link">
+    <nav>
+        <ul>
+          <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
+          <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
+          <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+<div class="menu">
+     <header><img src="static/image/perenco.png" style="color: whitesmoke;"  width="200" height="75"    alt=""></header>
+
+    <ul>
+        <li><a href="#"><i class="far fa-check-circle"></i>Admin Usuario</a></li>
+        <li><a href="{{url_for('admin')}}"><i class="far fa-check-circle"></i>Admin</a></li>
+    </ul>
+</div>
+<form action="/user_admin"></form>
+<form action="/crear_user_admin" method="POST">
+  <div class="formulario_Crear" style="padding-left: 300px; padding-top: 80px;  padding-right: 70px;">
+      <h3 style="color: #04090c;">Crear Usuario</h3><br>       
+    <div style="width: 15%;">  
+      <p>Identificación<input type="text" class="form-control" name="iduser" id="text" ></p>
+    </div>
+    <div style="margin-left: 17%; width: 30%; margin-top:-78px;"> 
+      <p>Nombre del Usuario<input type="text" class="form-control" name="nombre" id="text" ></p>
+    </div>
+    <div style=" margin-left: 49%; width: 20%; margin-top: -78px;">  
+      <p>E-mail<input type="text" class="form-control" name="email" id="text" ></p>
+    </div>
+    <div style="margin-left: 71%; width: 20%; margin-top: -78px;">   
+      <p>Contraseña<input type="password" class="form-control" name="password" id="text" ></p>
+    </div>
+    <div style = "margin-left:92%; margin-top:-53px;">   
+        <input type="submit" value="Crear" name="Guardar"class="btn btn-outline-secondary" />
+   </div>
+   </div>      
+</form><br>
+
+<form action="/mostrar_user_admin" >
+    <div class="formulario_Consultar" style="padding-left: 300px; padding-top: -25px;  padding-right: 70px;">
+        <h3 style="color: #063146;">Listado de Usuarios Creados</h3>
+        <p style="color:darkgreen; font-size:smaller;">{{total}} Proyectos Creados </p>
+        <button type="submit" class="btn btn-outline-secondary">Ver Listado</button> 
+        <br>
+        <br>
+      <table class="table">
+          <thead class="thead-dark">
+            <tr>
+                <th scope="col">Identificación</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Operaciones</th>
+             </tr>
+          </thead>
+          <tbody>  
+              {% for row in result_user %}
+              <tr>
+              <td>{{row["iduser"]}}</td>
+              <td>{{row["nombre"]}}</td>
+              <td>{{row["email"]}}</td>
+              <td>{{row["rol"]}}</td>
+              <td>
+                <a href="/update_usuario/{{row.iduser}}" class="btn btn-outline-warning" data-toggle="modal" data-target="#modaledit{{row.iduser}}" style="font-size: small;"><i class="fas fa-edit"></i></a>
+                <a href="/delete_usuario/{{row.iduser}}" class="btn btn-outline-danger" onclick="return confirm('Are You Sure To Delete ?')" style="font-size: small;"><i class="far fa-trash-alt"></i></a>
+              </td>
+              </tr>  
+               <!-- Modal Edit Employee-->
+           <div id="modaledit{{row.iduser}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Actualizar Informacion</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('update_usuario')}}" method="POST">
+                        <div class="form-group">
+                          <!--<p style="color: brown; font-size: small;"> En las fechas por favor utilizar este formato: AAAA-MM-DD</p>
+                          -->
+                          <input type="hidden" class="form-control" name="id" value="{{row.iduser}}">
+                          <!--<p>Identificación
+                          <input type="text" disabled="disabled" class="form-control" name="id" value="{{row.iduser}}">
+                          --></p>
+                          <p>Usuario
+                          <input type="text" class="form-control" name="nombre" value="{{row.nombre}}">
+                          </p>
+                          <p>Rol
+                          <select name="rol" class="form-control">seleccione nuevo rol:
+                            <option value="{{row.rol}}" disabled= "disabled" selected>{{row.rol}}</option> 
+                            <option value="Inactivo">Inactivo</option> 
+                            <option value="Gerente">Gerente</option>
+                            <option value="Administrador">Administrador</option>
+                          </select>
+                          </p>
+                          <p>E-mail
+                          <input type="text" class="form-control" name="email" value="{{row.email}}">
+                          </p>
+                          </div>
+                        <div class="form-group">
+                          <button class="btn btn-outline-success" type="submit">Actualizar</button>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+           </div>
+        </div>     
+      {% endfor %}
+    </tbody>
+  </table>   
+</div>
+</form>
+<!--SCRIPTS-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
