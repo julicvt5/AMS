@@ -1,6 +1,6 @@
 
 # lIBRERIAS
-from flask import Flask, render_template, Response, request, session, logging, redirect, url_for, flash , make_response# clase para tener una conexión
+from flask import Flask, render_template, Response, request, session, logging, redirect, url_for, flash , make_response # clase para tener una conexión
 from flask_bootstrap import Bootstrap
 from openpyxl import load_workbook, workbook  # Libreria excel
 from openpyxl import Workbook
@@ -15,18 +15,23 @@ from email.mime.base import MIMEBase
 from email.encoders import encode_base64
 import locale
 import re # validar correos
+
 #--------------------------------------------------
 app = Flask(__name__)
 # configuración de la BD en Access
+
 connStr = (
     r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
-    r"DBQ=C:\Users\Julieth Carolina\Desktop\INSIGHT\amsdb.accdb;"
-    )
+    r"DBQ=D:\workspace_flask\AMS\amsdb.accdb;"
+)
+
 cnxn = pyodbc.connect(connStr)
 # cur para conexión a BD y ejecutar consultas
 cur = cnxn.cursor()
 #settings
+
 app.secret_key = 'mysecretkey'
+
 # definimos con @app.route las rutas o link de acceso 
 
 #CODIGO DE RUTAS PARA ADMIN 
@@ -46,30 +51,41 @@ def login():
       return render_template ("login.html")
   elif request.method =='POST':
        email = request.form['email']
-       password = request.form['password'].encode('utf-8')
-       print(password)
-       hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-       print(hash_password)
+       password_login = request.form['password'] #.encode('utf-8')
+       
+       print("PASSWORD : ",  password_login)
+       
+       # hash_password = bcrypt.hashpw(password_login, bcrypt.gensalt())
+       # print("HASH_PASSWORD ::: ", hash_password)
+
        cur = cnxn.cursor()
-       cur.execute ("SELECT*FROM users WHERE email=?", (email,))
+       cur.execute ("SELECT * FROM users WHERE email = ? and password = ?", (email, password_login))
        user = cur.fetchone()
+
+       print("VA ACA.... ::: ", user)
+
        # cur.close()
-       if (len(user)>=1): 
-          # a = bcrypt.hashpw(password, user['password'].encode('utf-8'))
+       if (len(user) >= 1) : 
+           print("VA ACA.... 1 ::: ")
+           # a = bcrypt.hashpw(password, user['password'].encode('utf-8'))
            #b = user['password'].encode('utf-8')
            #if bcrypt.hashpw(password, user['password'].encode('utf-8'))==user['password'].encode('utf-8'):
            #if a == b:
 
-            #session['nombre'] = user['nombre']
-               session['nombre']= (user[1]) #[0] es la posición en BD de la tabla user que quiero que registre en la tabla. 
+           #session['nombre'] = user['nombre']
+           session['nombre'] = (user[1]) #[0] es la posición en BD de la tabla user que quiero que registre en la tabla. 
+           print("VA ACA.... ::: ")
            #session['email'] = user['email']
-               session['email'] = user[2]
-               cur.execute(u'INSERT INTO tblogin (email) VALUES (?)', (email,))
-               print(email)
-            #mysql.connection.commit()
-               cur.commit()
-               return render_template ("home.html")
-            #return render_template ("admin.html")
+               
+           session['email'] = user[2]
+           cur.execute(u'INSERT INTO tblogin (email) VALUES (?)', (email,))
+           print(email)
+           
+           #mysql.connection.commit()
+           cur.commit()
+           return render_template ("home.html")
+           #return render_template ("admin.html")
+       
        else:
            return "Error password or user"
 
@@ -798,7 +814,7 @@ def descarga_excel():
             print(Etapa)
             Proyecto= Pozo + '_' + Sistema
             print(Proyecto)           
-            filesheet = "C:/Users/Julieth Carolina/Desktop/Resumen.xlsx"
+            filesheet = "D:/workspace_flask/AMS/Resumen.xlsx"
             wb = Workbook()
             #wb = load_workbook(filesheet)
             sheet = wb.active 
@@ -967,7 +983,9 @@ def informe_proyecto():
             result_proyecto2 = cur.fetchall()
             ###Codigo generar PDF
             rendered =  render_template("informePDF.html",result_pozo_sist=result_pozo_sist, seleccione_proyecto=seleccione_proyecto, result_etapa=result_etapa, result_proyecto2=result_proyecto2 )
-            path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # ubicacion del programa para convertir html pdf
+            
+            path_wkhtmltopdf = r'D:\\workspace_flask\\AMS\\libs\\wkhtmltox\\bin\\wkhtmltopdf.exe' # ubicacion del programa para convertir html pdf
+            
             config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf )
             pdf = str (pdfkit.from_string(rendered, "informe.pdf", configuration=config))
             response = make_response(pdf)
