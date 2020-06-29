@@ -652,9 +652,9 @@ def datos_proyecto():
             cur = cnxn.cursor()
             cur.execute('SELECT nombre FROM proyectos') 
             result_proyecto = cur.fetchall()
-            cur.execute('SELECT DISTINCT nom_etapa FROM componentes') # etapas Distin sirve para que no aparezca duplicado el dato
+            cur.execute('SELECT DISTINCT id, nom_etapa FROM etapas') # etapas Distin sirve para que no aparezca duplicado el dato
             result_etapa = cur.fetchall()
-            cur.execute("SELECT nombre FROM componentes") # etapas y componentes
+            cur.execute("SELECT id, nombre, nom_etapa FROM componentes") # etapas y componentes
             result_compo = cur.fetchall()
             cur.execute('SELECT nombre FROM estados')
             result_estado = cur.fetchall()
@@ -709,7 +709,7 @@ def datos_proyecto():
 @app.route('/resumen_proyecto', methods=['GET','POST'])
 def resumen_proyecto():
 
-     #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur = cnxn.cursor()
     cur.execute('SELECT nombre FROM proyectos') 
     list_proyecto = cur.fetchall()

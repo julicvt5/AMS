@@ -61,9 +61,9 @@
         </div> 
         <div style=" margin-left: 32%; width: 100%; margin-top:-78px;">  
         <p>Seleccione la Etapa:
-            <select name="seleccione_etapa" class="form-control" style="width: 30%;">
+            <select id = "etapas" name="seleccione_etapa" class="form-control" style="width: 30%;">
               {% for row in result_etapa %}
-              <option>{{row["nom_etapa"]}}</option>
+              <option value = {{row["nom_etapa"]}}> {{row["nom_etapa"]}} </option>
               {% endfor %}
             </select>
           </p>
@@ -71,9 +71,9 @@
 
         <div style=" margin-left: 64%; width: 82%; margin-top:-78px;">
           <p>Seleccione el Componente: 
-           <select name="seleccione_componente"  class="form-control" style="width: 36%;">
+           <select id="componentes" name="seleccione_componente"  class="form-control" style="width: 36%;">
              {% for row in result_compo %}
-             <option>{{row["nombre"]}}</option>
+             <option value = {{row["id"]}} class= {{row["nom_etapa"]}} >{{row["nombre"]}}</option>
              {% endfor %}
              
             </select>
@@ -143,7 +143,42 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+    
+    selectEtapas = document.querySelector('#etapas'),
+    selectComponentes = document.querySelector('#componentes'),
+   
+    layoutPlaceholder = selectComponentes.querySelector('option.placeholder');
 
+    function clearLayoutSelector() {
+      return [...selectComponentes.querySelectorAll('option:not(.placeholder)')]
+        .map(layout => {
+        layout.remove();
+        return layout;
+      });
+    }
+    const opcionesLayout = clearLayoutSelector();
+
+    function contenidoCondicionalLayout(moduloActual = 'sin_proyecto') {
+      clearLayoutSelector();
+
+      let layoutsHabilitados = opcionesLayout.filter(layout => {
+        return layout.className === moduloActual;
+      })
+      .map(layout => {
+        selectComponentes.appendChild(layout);
+        return layout;
+      });
+
+      layoutPlaceholder.setAttribute('selected', true);
+        return (layoutsHabilitados || []).length;
+      }
+
+    selectEtapas.addEventListener('change', (changeModulo) => {
+      let moduloActual = changeModulo.target.value,
+      cantidadLayouts = contenidoCondicionalLayout(moduloActual);
+    });
+</script>
 </body>
 
 </html>
