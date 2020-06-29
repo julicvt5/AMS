@@ -16,13 +16,15 @@ from email.encoders import encode_base64
 import locale
 import re # validar correos
 
+import hashlib
+
 #--------------------------------------------------
 app = Flask(__name__)
 # configuración de la BD en Access
 
 connStr = (
     r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
-    r"DBQ=D:\workspace_flask\AMS\amsdb.accdb;"
+    r"DBQ=D:\\workspace_flask\\AMS\\amsdb.accdb;"
 )
 
 cnxn = pyodbc.connect(connStr)
@@ -47,47 +49,41 @@ def index ():
     
 @app.route('/login', methods=['GET','POST']) # ruta que mostrara la pagina del login
 def login():
-  if request.method == 'GET':
-      return render_template ("login.html")
-  elif request.method =='POST':
-       email = request.form['email']
-       password_login = request.form['password'] #.encode('utf-8')
+    print("request.method ::: ",request.method)  
+    if request.method == 'GET':
+        return render_template ("login.html")
+    elif request.method =='POST':
+        email = request.form['email']
+        password_login = request.form['password'] #.encode('utf-8')
        
-       print("PASSWORD : ",  password_login)
        
-       # hash_password = bcrypt.hashpw(password_login, bcrypt.gensalt())
-       # print("HASH_PASSWORD ::: ", hash_password)
+        passw = hashlib.md5(password_login.encode())
+        print("PASSWORD : ",  password_login)
+        print("PASSWORD MD5 : ",  passw.hexdigest())
 
-       cur = cnxn.cursor()
-       cur.execute ("SELECT * FROM users WHERE email = ? and password = ?", (email, password_login))
-       user = cur.fetchone()
+        cur = cnxn.cursor()
+        cur.execute ("SELECT * FROM users WHERE email = ? and password = ?", (email, passw.hexdigest()))
+        user = cur.fetchone()
 
-       print("VA ACA.... ::: ", user)
+        print("VA ACA.... ::: ", user)
 
-       # cur.close()
-       if (len(user) >= 1) : 
-           print("VA ACA.... 1 ::: ")
-           # a = bcrypt.hashpw(password, user['password'].encode('utf-8'))
-           #b = user['password'].encode('utf-8')
-           #if bcrypt.hashpw(password, user['password'].encode('utf-8'))==user['password'].encode('utf-8'):
-           #if a == b:
-
-           #session['nombre'] = user['nombre']
-           session['nombre'] = (user[1]) #[0] es la posición en BD de la tabla user que quiero que registre en la tabla. 
-           print("VA ACA.... ::: ")
-           #session['email'] = user['email']
+        # cur.close()
+        if user != None: 
+            print("VA ACA.... 1 ::: ")
+  
+            session['nombre'] = (user[1]) #[0] es la posición en BD de la tabla user que quiero que registre en la tabla. 
+            print("VA ACA.... ::: ")
                
-           session['email'] = user[2]
-           cur.execute(u'INSERT INTO tblogin (email) VALUES (?)', (email,))
-           print(email)
+            session['email'] = user[2]
+            cur.execute(u'INSERT INTO tblogin (email) VALUES (?)', (email,))
+            print(email)
            
-           #mysql.connection.commit()
-           cur.commit()
-           return render_template ("home.html")
-           #return render_template ("admin.html")
-       
-       else:
-           return "Error password or user"
+            cur.commit()
+            return render_template ("home.html")
+            #return render_template ("admin.html")
+        else:
+            return render_template("login.html", error="Usuario y/o constraseña son erroneos")
+
 
 @app.route('/reg_user', methods=['GET','POST']) # 
 def reg_user ():
@@ -97,13 +93,13 @@ def reg_user ():
         iduser=request.form['iduser']
         nombre = request.form['nombre']
         email = request.form['email']
-        password = request.form['password'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt()) # para encriptar contraseña
+        password = request.form['password']
+        hash_password = hashlib.md5(password.encode()) # para encriptar contraseña
         #cur = mysql.connection.cursor()
         cur = cnxn.cursor()
         cur.execute(u'INSERT INTO users (iduser, nombre, email, password) VALUES (?, ?, ?, ?)', 
-        (iduser, nombre, email, hash_password))
-        #mysql.connection.commit()
+        (iduser, nombre, email, hash_password.hexdigest()))
+       
         cur.commit()
         session['nombre'] = nombre
         session['email'] = emailiduser = request.form['iduser']
@@ -712,7 +708,21 @@ def datos_proyecto():
 
 @app.route('/resumen_proyecto', methods=['GET','POST'])
 def resumen_proyecto():
+
+     #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur = cnxn.cursor()
+    cur.execute('SELECT nombre FROM proyectos') 
+    list_proyecto = cur.fetchall()
+    cur.execute('SELECT nom_etapa FROM etapas') 
+    list_etapa = cur.fetchall()
+
+    if request.method == 'GET':
+        # return render_template("index.html")
+        print("No Post Back Call")
+        return render_template("resumen_proyecto.html", list_proyecto=list_proyecto, list_etapa=list_etapa)
+    
     if request.method == 'POST':
+        
         if request.form.get('List') == 'Activar Opciones':
             #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur = cnxn.cursor()
@@ -721,6 +731,7 @@ def resumen_proyecto():
             cur.execute('SELECT nom_etapa FROM etapas') 
             list_etapa = cur.fetchall()
             return render_template("resumen_proyecto.html", list_proyecto=list_proyecto, list_etapa=list_etapa ) 
+        
         elif request.form.get('Consultar') == 'Consultar':
             selec_proyecto = request.form['selec_proyecto']
             seleccione_etapa = request.form['seleccione_etapa']
@@ -743,12 +754,7 @@ def resumen_proyecto():
                 result_etapa =cur.fetchall()
                 cur.execute("SELECT id, nom_proyecto, nom_etapa, nom_componente, Valor, valor_moneda, nom_estado, date_available, comentarios, fecha_registro, nom_usuario FROM resumen WHERE nom_proyecto= ?", (selec_proyecto, ))
                 result_proyecto2 = cur.fetchall()
-                return render_template("resumen_proyecto.html", Pozo=Pozo, Sist=Sist ,  selec_proyecto=selec_proyecto, seleccione_etapa=seleccione_etapa, result_etapa=result_etapa, result_proyecto2=result_proyecto2 )      
-    else:
-        if request.method == 'GET':
-            # return render_template("index.html")
-            print("No Post Back Call")
-            return render_template("resumen_proyecto.html") 
+                return render_template("resumen_proyecto.html", Pozo=Pozo, Sist=Sist ,  selec_proyecto=selec_proyecto, seleccione_etapa=seleccione_etapa, result_etapa=result_etapa, result_proyecto2=result_proyecto2 )       
 
 
 @app.route('/update_resproyecto', methods = ['GET', 'POST'])
