@@ -489,6 +489,7 @@ def proyectos():
         print("No Post Back Call")
         return render_template("proyectos.html")
 
+
 @app.route('/mostrar_proyectos', methods=['GET','POST'])
 def mostrar_proyectos():
     #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -497,6 +498,7 @@ def mostrar_proyectos():
     result_proy = cur.fetchall()
     total = len(result_proy)
     return render_template("proyectos.html", result_proy = result_proy, total=total) 
+
 
 @app.route('/update_proyecto', methods = ['GET', 'POST'])
 def update_proyecto():
@@ -512,6 +514,7 @@ def update_proyecto():
         cur.commit()
         flash("Employee Updated Successfully")
         return redirect(url_for('proyectos'))
+
 
 @app.route('/delete_proyecto/<id>/', methods = ['GET', 'POST'])
 def delete_proyecto(id):
@@ -529,7 +532,17 @@ def delete_proyecto(id):
 @app.route('/user_admin', methods=['GET','POST']) # 
 def user_admin():
     if request.method == 'GET':
-       return render_template ("user_admin.html")                                  
+        cur = cnxn.cursor()
+        cur.execute('SELECT iduser, nombre, email, rol FROM users')
+        result_user = cur.fetchall()
+     
+        cur.execute('SELECT id, nombre FROM rol')
+        result_rol = cur.fetchall()
+    
+        total = len(result_user)
+
+        users = setNameRol(result_user, result_rol)
+        return render_template("user_admin.html", result_user = users, total = total, roles=result_rol)
     else:
        return render_template ("user_admin.html")                                  
         
@@ -563,27 +576,55 @@ def crear_user_admin():
         print("No Post Back Call")
         return render_template("user_admin.html")
 
-@app.route('/mostrar_user_admin', methods=['GET','POST']) # 
-def mostrar_user_admin():
+@app.route('/mostrar_user_admin/<string:row_id>', methods=['GET', 'POST']) 
+def mostrar_user_admin(row_id):
+    print( " Entro a mostrar_user_admin ::: ", request.method)
+    print( " Entro a mostrar_user_admin ::: ", row_id)
     #cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur = cnxn.cursor()
     cur.execute('SELECT iduser, nombre, email, rol FROM users')
     result_user = cur.fetchall()
+     
+    cur.execute('SELECT id, nombre FROM rol')
+    result_rol = cur.fetchall()
+    
     total = len(result_user)
-    return render_template("user_admin.html", result_user = result_user, total=total)
+
+    users = setNameRol(result_user, result_rol)
+    return render_template("user_admin.html", result_user = users, total = total, roles=result_rol)
+
+
+def setNameRol(result_user, result_rol):
+
+    for user in result_user:
+        for rol in result_rol:
+            if (user[3] != None):
+                if ( int(user[3]) == int(rol[0])): 
+                    user[3] = rol[1]
+                    break
+
+    return result_user            
+    
 
 @app.route('/update_usuario', methods = ['GET', 'POST'])
 def update_usuario():
+
+    print("Entro a update_usuario ::: ", request.method)
+
     if request.method == 'POST':
         id = request.form['id']
         nombre = request.form['nombre']   
         rol = request.form['rol']   
         email = request.form['email'] 
         cur = cnxn.cursor()
+
+        print('ROL EN UPDATE USER : ', rol)
+
         cur.execute('UPDATE users SET nombre=?, rol=?, email=? WHERE iduser=?', nombre, rol, email, id)
         cur.commit()
         flash("Employee Updated Successfully")
         return redirect(url_for('user_admin'))
+    return redirect(url_for('user_admin'))    
 
 @app.route('/delete_usuario/<id>/', methods = ['GET', 'POST'])
 def delete_usuario(id):

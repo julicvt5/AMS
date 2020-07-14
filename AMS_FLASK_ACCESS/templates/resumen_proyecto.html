@@ -1,47 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>menu</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
-    <link rel="stylesheet" href="static/css/estilos1.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-</head>
+ {% extends "commons/header_menu.html" %}
 
-<body>
-  {% with messages = get_flashed_messages()%}
-  {% if messages %}
-  {% for message in messages  %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>{{ message }}</strong>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  <!-- <p style="padding-left: 300px; padding-top: 120px;">{{ message }}</p>-->
-  {% endfor %}
-  {% endif %}
-  {% endwith%}
 
-    <div class="link">
-         <nav>
-            <ul>
-                <li><a href="{{url_for('home')}}" style="color:black;">Inicio</a></li>
-                <li><a href="{{url_for('menu_proyecto')}}" style="color:black;">Proyectos</a></li>
-                <li><a href="{{url_for('login')}}" style="color:black;">Cerrar sesión</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div class="menu">
-      <header>PROJECT<p>A M S</p></header>
-        <ul>
-            <li><a href="{{url_for('datos_proyecto')}}"><i class="fas fa-donate"></i>Diligenciar Proyecto</a></li>
-            <li><a href="{{url_for('resumen_proyecto')}}"><i class="fas fa-folder open"></i>Ver Resumen del proyecto</a></li>
-            <li><a href="{{url_for('informe_proyecto')}}"><i class="fas fa-folder open"></i>Generar informe</a></li>
-        </ul>
-    </div>
+{% block content %}
 
     
 <!-- Boton descargar Excel-->
@@ -58,15 +18,13 @@
 <br>
    </form>
 
-
-
   <form action="/resumen_proyecto" method="POST">      
    <!--<form action="consult_datos_proy" method="POST">
    --><div class="formulario_Crear" style="padding-left: 300px; padding-top: 80px; padding-right: 70px;">
       <h3>Resumen del Proyecto</h3><br>
       <h6> Proyecto:</h6>
       <div style=" margin-left: 7%; width: 80%; margin-top:-35px;">
-        <select id="select_proyecto" name="selec_proyecto" class="form-control" style="width: 30%;">
+        <select id="select_proyecto" name="selec_proyecto" class="form-control" style="width: 30%;" placeholder="nane">
           {% for row in list_proyecto %}
           <option value={{row["nombre"]}} >{{row["nombre"]}}</option>
           {% endfor %}
@@ -207,9 +165,6 @@
 </div>
 </form>
 
-
-
-
 <!--SCRIPTS-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -218,6 +173,7 @@
     
     selectModulo = document.querySelector('#select_proyecto'),
     selectLayout = document.querySelector('#select_etapa'),
+   
     layoutPlaceholder = selectLayout.querySelector('option.placeholder');
 
     function clearLayoutSelector() {
@@ -250,7 +206,5 @@
     });
 </script>
 
-</body>
-
-</html>
+{% endblock %}
 

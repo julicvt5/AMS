@@ -1,0 +1,42 @@
+<!-- Modal Edit Employee-->
+<div id="modaledit{{row.iduser}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Actualizar Informacion</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('update_usuario')}}" method="POST">
+                        <div class="form-group">
+                          <!--<p style="color: brown; font-size: small;"> En las fechas por favor utilizar este formato: AAAA-MM-DD</p>
+                          -->
+                          <input type="hidden" class="form-control" name="id" value="{{row.iduser}}">
+                          <!--<p>Identificación
+                          <input type="text" disabled="disabled" class="form-control" name="id" value="{{row.iduser}}">
+                          --></p>
+                          <p>Usuario
+                          <input type="text" class="form-control" name="nombre" value="{{row.nombre}}">
+                          </p>
+                          <p>Rol
+                          <select name="rol" class="form-control">seleccione nuevo rol:
+                            <option value="{{row.rol}}" disabled= "disabled" selected>{{row.rol}}</option> 
+                            <option value="Inactivo">Inactivo</option> 
+                            <option value="Gerente">Gerente</option>
+                            <option value="Administrador">Administrador</option>
+                          </select>
+                          </p>
+                          <p>E-mail
+                          <input type="text" class="form-control" name="email" value="{{row.email}}">
+                          </p>
+                          </div>
+                        <div class="form-group">
+                          <button class="btn btn-outline-success" type="submit">Actualizar</button>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  </div>
+              </div>
+           </div>
+        </div>   

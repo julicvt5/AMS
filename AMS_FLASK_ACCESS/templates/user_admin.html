@@ -66,13 +66,13 @@
    </div>      
 </form><br>
 
-<form action="/mostrar_user_admin" >
-    <div class="formulario_Consultar" style="padding-left: 300px; padding-top: -25px;  padding-right: 70px;">
-        <h3 style="color: #063146;">Listado de Usuarios Creados</h3>
-        <p style="color:darkgreen; font-size:smaller;">{{total}} Proyectos Creados </p>
-        <button type="submit" class="btn btn-outline-secondary">Ver Listado</button> 
-        <br>
-        <br>
+
+<div class="formulario_Consultar" style="padding-left: 300px; padding-top: -25px;  padding-right: 70px;">
+      <h3 style="color: #063146;">Listado de Usuarios Creados</h3>
+      <p style="color:darkgreen; font-size:smaller;">{{total}} Proyectos Creados </p>
+      <button type="submit" class="btn btn-outline-secondary">Ver Listado</button> 
+      <br>
+      <br>
       <table class="table">
           <thead class="thead-dark">
             <tr>
@@ -85,55 +85,53 @@
           </thead>
           <tbody>  
               {% for row in result_user %}
-              <tr>
-              <td>{{row["iduser"]}}</td>
-              <td>{{row["nombre"]}}</td>
-              <td>{{row["email"]}}</td>
-              <td>{{row["rol"]}}</td>
-              <td>
-                <a href="/update_usuario/{{row.iduser}}" class="btn btn-outline-warning" data-toggle="modal" data-target="#modaledit{{row.iduser}}" style="font-size: small;"><i class="fas fa-edit"></i></a>
-                <a href="/delete_usuario/{{row.iduser}}" class="btn btn-outline-danger" onclick="return confirm('Are You Sure To Delete ?')" style="font-size: small;"><i class="far fa-trash-alt"></i></a>
-              </td>
-              </tr>  
-               <!-- Modal Edit Employee-->
+             
+            <tr row_id = {{row["iduser"]}}>
+              <form method="POST" action="{{ url_for('mostrar_user_admin', row_id=row["iduser"]) }}">
+                <td>{{row["iduser"]}}</td>
+                <td>{{row["nombre"]}}</td>
+                <td>{{row["email"]}}</td>
+                <td>{{row["rol"]}}</td>
+                <td>
+                    <a href="/update_usuario/{{row.iduser}}" class="btn btn-outline-warning" data-toggle="modal" data-target="#modaledit{{row.iduser}}" style="font-size: small;"><i class="fas fa-edit"></i></a>
+                    <a href="/delete_usuario/{{row.iduser}}" class="btn btn-outline-danger" onclick="return confirm('Are You Sure To Delete ?')" style="font-size: small;"><i class="far fa-trash-alt"></i></a>
+                </td>
+              </form>
+            </tr>
+            <!-- Modal Edit Employee-->
            <div id="modaledit{{row.iduser}}" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
                     <h4 class="modal-title">Actualizar Informacion</h4>
-                  </div>
-                  <div class="modal-body">
-                    <form action="{{url_for('update_usuario')}}" method="POST">
+                  </div>  
+                  <form action={{url_for("update_usuario")}} method='POST'>
+                    <div class="modal-body">
+                  
                         <div class="form-group">
                           <!--<p style="color: brown; font-size: small;"> En las fechas por favor utilizar este formato: AAAA-MM-DD</p>
                           -->
-                          <input type="hidden" class="form-control" name="id" value="{{row.iduser}}">
-                          <!--<p>Identificación
-                          <input type="text" disabled="disabled" class="form-control" name="id" value="{{row.iduser}}">
-                          --></p>
+                          <input type="hidden" class="form-control" name="id" value="{{row.iduser}}"></p>
                           <p>Usuario
                           <input type="text" class="form-control" name="nombre" value="{{row.nombre}}">
                           </p>
                           <p>Rol
-                          <select name="rol" class="form-control">seleccione nuevo rol:
-                            <option value="{{row.rol}}" disabled= "disabled" selected>{{row.rol}}</option> 
-                            <option value="Inactivo">Inactivo</option> 
-                            <option value="Gerente">Gerente</option>
-                            <option value="Administrador">Administrador</option>
+                          <select name="rol" class="form-control"> seleccione nuevo rol:
+                            {% for row in roles%}
+                              <option value={{row["id"]}}>{{row["nombre"]}}</option>
+                            {%endfor%}
                           </select>
                           </p>
                           <p>E-mail
                           <input type="text" class="form-control" name="email" value="{{row.email}}">
                           </p>
                           </div>
-                        <div class="form-group">
-                          <button class="btn btn-outline-success" type="submit">Actualizar</button>
-                        </div>
+                    </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-outline-success" type="submit">Actualizar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      </div>
                     </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                  </div>
               </div>
            </div>
         </div>     
@@ -141,7 +139,7 @@
     </tbody>
   </table>   
 </div>
-</form>
+
 <!--SCRIPTS-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
