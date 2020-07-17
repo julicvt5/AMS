@@ -1,14 +1,8 @@
 package com.perenco.repository.sistemas;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,11 +15,13 @@ import java.util.Date;
 public class SistemasEntity implements Serializable {
 
     @Id
+    @Column(name = "id")
     private String id;
 
     private String tipo;
 
-    private Integer numero;
+    private String numero;
+
 
     private String nombre;
 

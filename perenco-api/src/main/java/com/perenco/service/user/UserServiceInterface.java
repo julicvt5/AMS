@@ -9,4 +9,6 @@ public interface UserServiceInterface {
 
     public List<UserDTO> usuarios();
 
+    public UserDTO save(final UserDTO userDTO);
+
 }

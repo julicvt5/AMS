@@ -26,6 +26,7 @@ public class LoginServiceImpl implements LoginServiceInterface{
         UserEntity userEntity = userRepository.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword())
                 .orElseThrow(RuntimeException::new);
         loginDTO.setId(userEntity.getIdUser());
+
         return loginDTO;
     }
 }

@@ -10,12 +10,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode()
 public class UserDTO implements Serializable {
 
     private String id;
     private String nombre;
     private String email;
     private String rol;
-    private String rolId;
+    private Integer rolId;
+    private String password;
 
 }

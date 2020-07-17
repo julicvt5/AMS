@@ -21,4 +21,9 @@ public class UserController {
         return userServiceInterface.usuarios();
     }
 
+    @PostMapping(  consumes = "application/json", produces = "application/json")
+    public UserDTO save(@RequestBody final UserDTO userDTO) {
+        return userServiceInterface.save(userDTO);
+    }
+    
 }

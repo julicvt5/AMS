@@ -9,4 +9,6 @@ public interface SistemaServiceInterface {
 
     public List<SistemaDTO> sistemas();
 
+    public SistemaDTO save(final SistemaDTO sistemaDTO);
+
 }

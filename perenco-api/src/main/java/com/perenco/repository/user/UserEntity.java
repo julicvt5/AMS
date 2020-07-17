@@ -15,16 +15,18 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 @ToString
-public class UserEntity implements Serializable  {
+public class UserEntity   {
 
-    @Id
+
     @Column(name="iduser")
     private String idUser;
 
     private String nombre;
 
-    private String rol;
+    private Integer rol;
 
+    @Id
+    @Column(name="email")
     private String email;
 
     private String password;

@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -37,5 +39,22 @@ public class SistemaServiceImpl implements SistemaServiceInterface {
         });
 
         return sistemaDTOS;
+    }
+
+    @Override
+    public SistemaDTO save(SistemaDTO sistemaDTO) {
+        SistemasEntity sistemasEntity = new SistemasEntity();
+
+        sistemasEntity.setId(sistemaDTO.getId());
+        sistemasEntity.setTipo(sistemaDTO.getTipoSistema());
+        sistemasEntity.setNombre(sistemaDTO.getNombreSistema());
+        sistemasEntity.setFechaRegistro(new Date());
+        sistemasEntity.setNumero(sistemaDTO.getNumeroSistema());
+
+        SistemasEntity responseEntity = sistemasRepository.saveAndFlush(sistemasEntity);
+        log.info(" Repsoen : {} ", responseEntity);
+
+        sistemaDTO.setId(responseEntity.getId());
+        return sistemaDTO;
     }
 }
