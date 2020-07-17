@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tblogin")
+@Table(name = "sistemas")
 @ToString
 public class SistemasEntity implements Serializable {
 

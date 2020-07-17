@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface TbPozosRepository extends JpaRepository<TbPozosEntity, String> {
+public interface PozosRepository extends JpaRepository<PozosEntity, String> {
 
 
 }

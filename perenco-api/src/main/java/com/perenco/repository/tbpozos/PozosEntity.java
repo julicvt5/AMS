@@ -16,9 +16,9 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tblogin")
+@Table(name = "tb_pozos")
 @ToString
-public class TbPozosEntity implements Serializable {
+public class PozosEntity implements Serializable {
 
     @Id
     private String id;
@@ -30,6 +30,7 @@ public class TbPozosEntity implements Serializable {
     @Column(name = "sistemas_nombre")
     private String sistemasNombre;
 
+    @Column(name = "nombre_usuario")
     private String nombreUsuario;
 
     @Column(name = "fecha_registro")

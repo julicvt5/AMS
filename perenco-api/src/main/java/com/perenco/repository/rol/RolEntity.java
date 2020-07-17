@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tblogin")
+@Table(name = "rol")
 @ToString
 public class RolEntity implements Serializable {
 

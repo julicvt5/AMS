@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tblogin")
+@Table(name = "componentes")
 @ToString
 public class ComponentesEntity implements Serializable {
 
@@ -29,7 +29,7 @@ public class ComponentesEntity implements Serializable {
     private Date nomUsuario;
 
     @Column(name = "nom_etapa")
-    private Date nomEtapa;
+    private String nomEtapa;
 
     @Column(name = "fecha_registro")
     private Date fechaRegistro;

@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TbLoginRepository extends JpaRepository<TbLoginEntity, String> {
 
-    public Optional<UserEntity> findByEmailAndPassword(final String email, final String password);
+
 }

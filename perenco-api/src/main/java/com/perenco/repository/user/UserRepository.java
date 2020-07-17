@@ -1,6 +1,5 @@
 package com.perenco.repository.user;
 
-import com.perenco.repository.Part;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
