@@ -1,9 +1,8 @@
 package com.perenco.service.proyectos;
 
-import com.perenco.dto.PozoDTO;
 import com.perenco.dto.ProyectosDTO;
-import com.perenco.dto.UserDTO;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public interface ProyectosServiceInterface {
@@ -13,5 +12,7 @@ public interface ProyectosServiceInterface {
     public ProyectosDTO guardar(final ProyectosDTO proyectosDTO);
 
     public ProyectosDTO editar(final ProyectosDTO proyectosDTO);
+
+    public ByteArrayInputStream generarPdf(final ProyectosDTO proyectosDTO);
 
 }

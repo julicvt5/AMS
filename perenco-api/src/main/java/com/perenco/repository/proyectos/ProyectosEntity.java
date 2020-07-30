@@ -21,7 +21,6 @@ import java.util.Date;
 public class ProyectosEntity implements Serializable {
 
     @Id
-    @Column(name="idProyectos")
     private String id;
 
     private String nombre;

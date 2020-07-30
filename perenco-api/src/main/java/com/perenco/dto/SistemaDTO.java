@@ -18,5 +18,6 @@ public class SistemaDTO implements Serializable {
     private String NumeroSistema;
     private String nombreSistema;
     private String nombreUsuario;
+    private String estado;
 
 }

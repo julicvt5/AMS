@@ -1,11 +1,10 @@
 package com.perenco.service.componente;
 
 import com.perenco.dto.ComponenteDTO;
-import com.perenco.dto.EstadoDTO;
 import com.perenco.repository.componentes.ComponentesEntity;
 import com.perenco.repository.componentes.ComponentesRepository;
-import com.perenco.repository.estados.EstadosEntity;
-import com.perenco.repository.estados.EstadosRepository;
+import com.perenco.repository.etapas.EtapasEntity;
+import com.perenco.repository.etapas.EtapasRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,19 +22,28 @@ public class ComponenteServiceImpl implements ComponenteServiceInterface {
     @Autowired
     private ComponentesRepository componentesRepository;
 
+    @Autowired
+    private EtapasRepository etapasRepository;
+
+    private static final String ESTADO_ACTIVO = "1";
+
     @Override
     public List<ComponenteDTO> componentes() {
 
-        List<ComponentesEntity> proyectoEntities = componentesRepository.findAll();
+        List<ComponentesEntity> proyectoEntities = componentesRepository.findByEstado(ESTADO_ACTIVO);
+
+        List<EtapasEntity> etapaList = etapasRepository.findAll();
 
         List<ComponenteDTO> componenteDTOS = new ArrayList<>();
+
         proyectoEntities.forEach( item -> {
             componenteDTOS.add(ComponenteDTO.builder()
                     .id(item.getId())
                     .nombre(item.getNombre())
                     .nombre(item.getNombre())
-                    .nombreEtapa(item.getNomEtapa())
+                    .nombreEtapa(obtenerNombreEtapas(etapaList, item.getNomEtapa()))
                     .fechaRegistro(item.getFechaRegistro())
+                    .estado(item.getEstado())
                     .build());
         });
 
@@ -50,6 +58,7 @@ public class ComponenteServiceImpl implements ComponenteServiceInterface {
         componenenteEntity.setNomUsuario(componenteDTO.getNombreUsuario());
         componenenteEntity.setNomEtapa(componenteDTO.getNombreEtapa());
         componenenteEntity.setFechaRegistro(new Date());
+        componenenteEntity.setEstado(componenteDTO.getEstado());
 
         ComponentesEntity response = componentesRepository.saveAndFlush(componenenteEntity);
 
@@ -74,5 +83,17 @@ public class ComponenteServiceImpl implements ComponenteServiceInterface {
         componentesRepository.saveAndFlush(response);
 
         return componenteDTO;
+    }
+
+    private String obtenerNombreEtapas(final List<EtapasEntity> etapas, final String etapaId) {
+        String nombreEtapa = "";
+
+        for ( EtapasEntity etapasEntity: etapas) {
+            if (etapasEntity.getId().equalsIgnoreCase(etapaId.toString()) ){
+                nombreEtapa = etapasEntity.getNombreEtapa();
+                break;
+            }
+        }
+        return nombreEtapa;
     }
 }

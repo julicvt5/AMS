@@ -1,5 +1,6 @@
 package com.perenco.controller.sistema;
 
+import com.perenco.dto.EstadoDTO;
 import com.perenco.dto.SistemaDTO;
 import com.perenco.service.sistema.SistemaServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class SistemaController {
     @PostMapping(  consumes = "application/json", produces = "application/json")
     public SistemaDTO save(@RequestBody final SistemaDTO sistemaDTO) {
         return sistemaService.save(sistemaDTO);
+    }
+
+    @PostMapping( path = "/editar", consumes = "application/json", produces = "application/json")
+    public SistemaDTO editar(@RequestBody final SistemaDTO sistemaDTO) {
+        return sistemaService.editar(sistemaDTO);
     }
 
 }

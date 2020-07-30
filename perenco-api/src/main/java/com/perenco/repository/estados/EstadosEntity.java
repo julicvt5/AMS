@@ -32,4 +32,5 @@ public class EstadosEntity implements Serializable {
 
     @Column(name = "nom_usuario")
     private String nomUsuario;
+
 }

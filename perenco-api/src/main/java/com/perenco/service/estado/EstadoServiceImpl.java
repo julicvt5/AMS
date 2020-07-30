@@ -24,10 +24,11 @@ public class EstadoServiceImpl implements EstadoServiceInterface {
     @Autowired
     private EstadosRepository estadosRepository;
 
+    private static final String ESTADO_ACTIVO = "1";
     @Override
     public List<EstadoDTO> estados() {
 
-        List<EstadosEntity> proyectoEntities = estadosRepository.findAll();
+        List<EstadosEntity> proyectoEntities = estadosRepository.findByEstado(ESTADO_ACTIVO);
 
         List<EstadoDTO> estadoDTOS = new ArrayList<>();
         proyectoEntities.forEach( item -> {
@@ -36,6 +37,7 @@ public class EstadoServiceImpl implements EstadoServiceInterface {
                     .nombre(item.getNombre())
                     .nombreUsuario(item.getNomUsuario())
                     .fechaRegistro(item.getFechaRegistro())
+                    .estado(item.getEstado())
                     .build());
         });
 
@@ -44,13 +46,16 @@ public class EstadoServiceImpl implements EstadoServiceInterface {
 
     @Override
     public EstadoDTO guardar(EstadoDTO estadoDTO) {
+
+        log.info(" EstadoDTO : {} ", estadoDTO);
+
         EstadosEntity estadoEntity = new EstadosEntity();
         estadoEntity.setId("0");
         estadoEntity.setNombre(estadoDTO.getNombre());
         estadoEntity.setFechaRegistro(new Date());
+        estadoEntity.setEstado(estadoDTO.getEstado());
 
         EstadosEntity response = estadosRepository.saveAndFlush(estadoEntity);
-
         estadoDTO.setId(response.getId());
 
         return estadoDTO;

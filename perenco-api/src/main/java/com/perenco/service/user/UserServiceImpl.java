@@ -89,6 +89,8 @@ public class UserServiceImpl implements UserServiceInterface {
     @Override
     public UserDTO editar(UserDTO userDTO) {
 
+        log.info(" userDTO : {} ", userDTO);
+
         Optional<UserEntity> userEntityOptional = userRepository.findById(userDTO.getId());
 
         if (!userEntityOptional.isPresent()) {

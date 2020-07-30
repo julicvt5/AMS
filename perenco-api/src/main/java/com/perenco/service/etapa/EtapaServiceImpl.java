@@ -20,9 +20,11 @@ public class EtapaServiceImpl implements EtapaServiceInterface {
     @Autowired
     private EtapasRepository etapasRepository;
 
+    private static final String ESTADO_ACTIVO = "1";
+
     @Override
     public List<EtapaDTO> etapas() {
-        List<EtapasEntity> etapaEntities = etapasRepository.findAll();
+        List<EtapasEntity> etapaEntities = etapasRepository.findByEstado(ESTADO_ACTIVO);
         List<EtapaDTO> etapaDTOS = new ArrayList<>();
         etapaEntities.forEach( item -> {
             etapaDTOS.add(EtapaDTO.builder()
@@ -30,6 +32,7 @@ public class EtapaServiceImpl implements EtapaServiceInterface {
                     .nombreEtapa(item.getNombreEtapa())
                     .fechaRegistro(item.getFechaRegistro())
                     .nombreUsuario(item.getNomUsuario())
+                    .estado(item.getEstado())
                     .build());
         });
         return etapaDTOS;
@@ -38,11 +41,14 @@ public class EtapaServiceImpl implements EtapaServiceInterface {
     @Override
     public EtapaDTO guardar(EtapaDTO etapaDTO) {
 
+        log.info(" etapaDTO : {} ", etapaDTO);
+
         EtapasEntity etapasEntity = new EtapasEntity();
         etapasEntity.setId("0");
         etapasEntity.setNombreEtapa(etapaDTO.getNombreEtapa());
         etapasEntity.setNomUsuario(etapaDTO.getNombreUsuario());
         etapasEntity.setFechaRegistro(new Date());
+        etapasEntity.setEstado(etapaDTO.getEstado());
 
         EtapasEntity response = etapasRepository.saveAndFlush(etapasEntity);
 

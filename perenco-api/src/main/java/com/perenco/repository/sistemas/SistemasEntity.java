@@ -22,9 +22,10 @@ public class SistemasEntity implements Serializable {
 
     private String numero;
 
-
     private String nombre;
 
     @Column(name = "fecha_registro")
     private Date fechaRegistro;
+
+    private String estado;
 }
